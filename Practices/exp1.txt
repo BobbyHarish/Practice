@@ -1,0 +1,65 @@
+#include<stdio.h>
+#include<conio.h>
+#include<ctype.h>
+#include<string.h>
+void main()
+{
+ char ch,id[50];
+ char key[12][20]={"void","main","int","char","while","if","else","for","do","return","switch"};
+ int i,j,hh=0;
+ FILE *h,*m;
+ clrscr();
+ h=fopen("demo.txt","r");
+ m=fopen("extract.txt","w");
+ while((ch=fgetc(h))!=EOF)
+ {
+	i=0;
+	if(isalpha(ch)||ch=='_')
+	{
+
+		while(isalnum(ch)||ch=='_')
+		{
+			id[i++]=ch;
+			ch=fgetc(h);
+		}
+		id[i]='\0';
+		for(j=0;j<5;j++)
+		{
+			if(strcmp(id,key[j])==0)
+			{
+				hh=1;
+				break;
+			}
+		}
+		if(hh==1)
+		{
+			printf("%s is a KEYWORD \n",id);
+			fprintf(m,"%s is a KEYWORD \n",id);
+			hh=0;
+		}
+		else
+		{
+			printf("%s is a IDENTIFIER \n",id);
+			fprintf(m,"%s is a IDENTIFIER \n",id);
+		}
+	}
+	else if(ch=='*' || ch=='=' ||ch=='<' || ch=='+')
+	{
+			printf("%c is a OPERATOR \n",ch);
+			fprintf(m,"%c is a OPERATOR \n",ch);
+	}
+	else if(isdigit(ch))
+	{
+		printf("%d ia CONSTANT \n",ch);
+		fprintf(m,"%d is a CONSTANT \n",ch);
+	}
+	else if(ch=='@'||ch=='#'|| ch=='$' || ch=='(' || ch==')')
+	{
+		printf("%c is a PREPROCESSOR \n",ch);
+		fprintf(m,"%c is a PREPROCESSOR \n",ch);
+	}
+ }
+ fclose(m);
+ fclose(h);
+ getch();
+}
